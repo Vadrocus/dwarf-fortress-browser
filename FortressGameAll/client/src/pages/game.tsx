@@ -96,7 +96,7 @@ export default function Game() {
 
         return prev;
       });
-    } else if (selectedAction === "build") {
+    } else if (selectedAction === "build_workshop") {
       setGameState((prev) => {
         const newTiles = prev.tiles.map((row) => [...row]);
         const tile = newTiles[y][x];
@@ -155,6 +155,127 @@ export default function Game() {
           };
         }
       });
+    } else if (selectedAction === "build_house") {
+      setGameState((prev) => {
+        const newTiles = prev.tiles.map((row) => [...row]);
+        const tile = newTiles[y][x];
+
+        if (prev.resources.stone >= 3 && prev.resources.wood >= 2) {
+          if (
+            tile.terrain === "empty" ||
+            tile.terrain === "grass" ||
+            tile.terrain === "dirt"
+          ) {
+            tile.construction = "house";
+
+            return {
+              ...prev,
+              tiles: newTiles,
+              resources: {
+                ...prev.resources,
+                stone: prev.resources.stone - 3,
+                wood: prev.resources.wood - 2,
+              },
+              messages: [
+                {
+                  id: `msg-${Date.now()}`,
+                  timestamp: Date.now(),
+                  text: `House built at (${x}, ${y})!`,
+                  type: "success",
+                },
+                ...prev.messages.slice(0, 49),
+              ],
+            };
+          } else {
+            return {
+              ...prev,
+              messages: [
+                {
+                  id: `msg-${Date.now()}`,
+                  timestamp: Date.now(),
+                  text: `Cannot build here! Clear the area first or choose grass/dirt terrain.`,
+                  type: "warning",
+                },
+                ...prev.messages.slice(0, 49),
+              ],
+            };
+          }
+        } else {
+          return {
+            ...prev,
+            messages: [
+              {
+                id: `msg-${Date.now()}`,
+                timestamp: Date.now(),
+                text: "Not enough resources! Need 3 stone and 2 wood to build house.",
+                type: "warning",
+              },
+              ...prev.messages.slice(0, 49),
+            ],
+          };
+        }
+      });
+    } else if (selectedAction === "build_nursery") {
+      setGameState((prev) => {
+        const newTiles = prev.tiles.map((row) => [...row]);
+        const tile = newTiles[y][x];
+
+        if (prev.resources.stone >= 4 && prev.resources.wood >= 3) {
+          if (
+            tile.terrain === "empty" ||
+            tile.terrain === "grass" ||
+            tile.terrain === "dirt"
+          ) {
+            tile.construction = "nursery";
+            tile.lastNurserySpawn = prev.tick; // Initialize spawn timer
+
+            return {
+              ...prev,
+              tiles: newTiles,
+              resources: {
+                ...prev.resources,
+                stone: prev.resources.stone - 4,
+                wood: prev.resources.wood - 3,
+              },
+              messages: [
+                {
+                  id: `msg-${Date.now()}`,
+                  timestamp: Date.now(),
+                  text: `Nursery built at (${x}, ${y})! New dwarves will spawn here.`,
+                  type: "success",
+                },
+                ...prev.messages.slice(0, 49),
+              ],
+            };
+          } else {
+            return {
+              ...prev,
+              messages: [
+                {
+                  id: `msg-${Date.now()}`,
+                  timestamp: Date.now(),
+                  text: `Cannot build here! Clear the area first or choose grass/dirt terrain.`,
+                  type: "warning",
+                },
+                ...prev.messages.slice(0, 49),
+              ],
+            };
+          }
+        } else {
+          return {
+            ...prev,
+            messages: [
+              {
+                id: `msg-${Date.now()}`,
+                timestamp: Date.now(),
+                text: "Not enough resources! Need 4 stone and 3 wood to build nursery.",
+                type: "warning",
+              },
+              ...prev.messages.slice(0, 49),
+            ],
+          };
+        }
+      });
     } else if (selectedAction === "zone") {
       setGameState((prev) => {
         const newTiles = prev.tiles.map((row) => [...row]);
@@ -198,7 +319,7 @@ export default function Game() {
     }
   };
 
-  const handleActionSelect = (action: "mine" | "build" | "zone") => {
+  const handleActionSelect = (action: "mine" | "build_workshop" | "build_house" | "build_nursery" | "zone") => {
     setSelectedAction((prev) => (prev === action ? null : action));
   };
 

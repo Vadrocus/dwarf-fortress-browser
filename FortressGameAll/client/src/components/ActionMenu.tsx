@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Pickaxe, Hammer, Box } from 'lucide-react';
+import { Pickaxe, Hammer, Box, Home, Baby } from 'lucide-react';
 
 interface ActionMenuProps {
-  onActionSelect: (action: 'mine' | 'build' | 'zone') => void;
+  onActionSelect: (action: 'mine' | 'build_workshop' | 'build_house' | 'build_nursery' | 'zone') => void;
   selectedAction: string | null;
 }
 
@@ -49,9 +49,9 @@ export default function ActionMenu({ onActionSelect, selectedAction }: ActionMen
           
           <TabsContent value="building" className="space-y-2 mt-3">
             <Button
-              variant={selectedAction === 'build' ? 'default' : 'outline'}
+              variant={selectedAction === 'build_workshop' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => onActionSelect('build')}
+              onClick={() => onActionSelect('build_workshop')}
               className="w-full justify-start"
               data-testid="button-build-workshop"
             >
@@ -59,7 +59,35 @@ export default function ActionMenu({ onActionSelect, selectedAction }: ActionMen
               Build Workshop
             </Button>
             <p className="text-xs text-muted-foreground">
-              Requires 5 stone. Place workshops for crafting.
+              Requires 5 stone. Craft items and equipment.
+            </p>
+
+            <Button
+              variant={selectedAction === 'build_house' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => onActionSelect('build_house')}
+              className="w-full justify-start"
+              data-testid="button-build-house"
+            >
+              <Home className="w-4 h-4 mr-2" />
+              Build House
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Requires 3 stone, 2 wood. Aesthetic dwelling.
+            </p>
+
+            <Button
+              variant={selectedAction === 'build_nursery' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => onActionSelect('build_nursery')}
+              className="w-full justify-start"
+              data-testid="button-build-nursery"
+            >
+              <Baby className="w-4 h-4 mr-2" />
+              Build Nursery
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Requires 4 stone, 3 wood. Spawns new dwarves!
             </p>
           </TabsContent>
           
