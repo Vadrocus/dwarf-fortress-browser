@@ -30,6 +30,8 @@ export const ConstructionType = {
   WORKSHOP: "workshop",
   STOCKPILE: "stockpile",
   WALL: "wall",
+  HOUSE: "house",
+  NURSERY: "nursery",
 } as const;
 
 export const MonsterType = {
@@ -53,6 +55,7 @@ export interface Tile {
   construction?: ConstructionType;
   craftingJob?: CraftingJob;
   storedItems?: Item[];
+  lastNurserySpawn?: number; // tick when last dwarf was spawned
 }
 
 export interface CraftingJob {

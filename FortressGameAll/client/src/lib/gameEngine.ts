@@ -120,8 +120,8 @@ export function updateGameState(state: GameState): GameState {
   let items = state.items.map((i) => ({ ...i }));
   const tick = state.tick + 1;
 
-  // Spawn monsters occasionally
-  if (tick % 200 === 0 && Math.random() < 0.2) {
+  // Spawn monsters more frequently!
+  if (tick % 100 === 0 && Math.random() < 0.5) {
     const edge = Math.floor(Math.random() * 4);
     let x, y;
 
@@ -164,6 +164,53 @@ export function updateGameState(state: GameState): GameState {
       },
       ...messages.slice(0, 49),
     ];
+  }
+
+  // Spawn dwarves from nurseries
+  for (let row of tiles) {
+    for (let tile of row) {
+      if (tile.construction === "nursery") {
+        // Initialize lastNurserySpawn if not set
+        if (tile.lastNurserySpawn === undefined) {
+          tile.lastNurserySpawn = tick;
+        }
+
+        // Spawn a new dwarf every 300 ticks (about 5 minutes at 1x speed)
+        if (tick - tile.lastNurserySpawn >= 300) {
+          // Pick an unused name or generate one
+          const usedNames = new Set(dwarves.map((d) => d.name));
+          let newName = DWARF_NAMES.find((name) => !usedNames.has(name));
+
+          if (!newName) {
+            // All names used, generate a unique one
+            newName = `Dwarf ${dwarves.length + 1}`;
+          }
+
+          const newDwarf: Dwarf = {
+            id: `dwarf-${Date.now()}-${Math.random()}`,
+            name: newName,
+            x: tile.x,
+            y: tile.y,
+            task: "idle",
+            health: 100,
+            maxHealth: 100,
+          };
+
+          dwarves.push(newDwarf);
+          tile.lastNurserySpawn = tick;
+
+          messages = [
+            {
+              id: `msg-${Date.now()}`,
+              timestamp: Date.now(),
+              text: `${newName} has been born in the nursery!`,
+              type: "success",
+            },
+            ...messages.slice(0, 49),
+          ];
+        }
+      }
+    }
   }
 
   // Update workshops - process crafting jobs

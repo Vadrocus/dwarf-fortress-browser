@@ -77,7 +77,11 @@ export default function GameGrid({ tiles, dwarves, monsters, onTileClick }: Game
         
         if (tile.construction) {
           ctx.fillStyle = 'hsl(45 90% 65%)';
-          const constructionChar = tile.construction === 'workshop' ? '⚒' : tile.construction === 'stockpile' ? '□' : '#';
+          let constructionChar = '#';
+          if (tile.construction === 'workshop') constructionChar = '⚒';
+          else if (tile.construction === 'stockpile') constructionChar = '□';
+          else if (tile.construction === 'house') constructionChar = '⌂';
+          else if (tile.construction === 'nursery') constructionChar = '♥';
           ctx.fillText(constructionChar, x * cellWidth + cellWidth / 2, y * cellHeight + cellHeight / 2);
         }
       }
