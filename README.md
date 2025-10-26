@@ -33,20 +33,36 @@ Fortress Terminal is a simplified dwarf colony simulator where you manage a grou
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### Play Online (Ready to Deploy!)
+
+This game is already built and ready to play! The `game-build` folder contains a complete, standalone HTML version that can be deployed anywhere.
+
+**Quick Deploy Options:**
+- **GitHub Pages**: See [DEPLOYMENT.md](DEPLOYMENT.md) for setup instructions
+- **Netlify/Vercel**: Drag and drop the `game-build` folder
+- **Local Play**: Open `game-build/index.html` in your browser (requires a local server)
+
+See the complete [Deployment Guide](DEPLOYMENT.md) for detailed instructions.
+
+### Development Setup
+
+For developers who want to modify the game:
+
+#### Prerequisites
 - Node.js (v18 or higher)
 - npm or yarn
 
-### Installation
+#### Installation
 
 1. Clone the repository:
 ```bash
 git clone <your-repo-url>
-cd FortressGame
+cd dwarf-fortress-browser
 ```
 
-2. Install dependencies:
+2. Navigate to the game folder and install dependencies:
 ```bash
+cd FortressGameAll
 npm install
 ```
 
@@ -56,6 +72,14 @@ npm run dev
 ```
 
 4. Open your browser to `http://localhost:5173`
+
+#### Building for Production
+
+```bash
+npm run build
+```
+
+The built files will be in `dist/public/`
 
 ## 🎯 How to Play
 
